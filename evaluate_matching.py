@@ -17,7 +17,7 @@ def train():
     dataloader = FSDataLoader()
     
     model = MatchingNetwork(3,out_channels=num_ways, hidden_size=84)
-    model.load_state_dict(torch.load('trained parameters/matching_network_miniimagenet_5shot_5way_15k.pt'))
+    model.load_state_dict(torch.load('trained parameters/matching_network_miniimagenet_5shot_5way.pt'))
     model.to(device='cuda')
     model.train()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
@@ -71,6 +71,7 @@ def train():
     plt.title('Matching network training miniObjecta 100 tasks')
     plt.plot(accuracy_l)
     plt.show()
+    print(sum(accuracy_l) / len (accuracy_l))
 
 if __name__ == '__main__':
     train()

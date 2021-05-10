@@ -3,6 +3,9 @@ from torchmeta.modules import MetaModule, MetaLinear
 
 
 def conv3x3(in_channels, out_channels, **kwargs):
+    # The convolutional layers (for feature extraction) use standard layers from
+    # `torch.nn`, since they do not require adaptation.
+    # See `examples/maml/model.py` for comparison.
     return nn.Sequential(
         nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1, **kwargs),
         nn.BatchNorm2d(out_channels, momentum=1., track_running_stats=False),

@@ -28,13 +28,14 @@ def train():
         transforms.Resize(84),
         transforms.ToTensor()
     ])
+    batch_size = 1
     dataset_transform = ClassSplitter(shuffle=True, num_train_per_class=5, num_test_per_class=5)
     dataset = MiniImagenet('data', transform=transform, num_classes_per_task=5, target_transform=Categorical(num_classes=5) ,meta_split="train", dataset_transform=dataset_transform )
 
-    dataloader = BatchMetaDataLoader(dataset, batch_size=25, shuffle=True)
+    dataloader = BatchMetaDataLoader(dataset, batch_size=batch_size, shuffle=True)
 
     model = ModelConvMiniImagenet(5)
-    model.to(device='cpu')
+    model.to(device='cuda')
     model.train()
     meta_optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
@@ -46,15 +47,15 @@ def train():
             model.zero_grad()
 
             train_inputs, train_targets = batch['train']
-            train_inputs = train_inputs.to(device='cpu')
-            train_targets = train_targets.to(device='cpu')
+            train_inputs = train_inputs.to(device='cuda')
+            train_targets = train_targets.to(device='cuda')
             
             test_inputs, test_targets = batch['test']
-            test_inputs = test_inputs.to(device='cpu')
-            test_targets = test_targets.to(device='cpu')
+            test_inputs = test_inputs.to(device='cuda')
+            test_targets = test_targets.to(device='cuda')
 
-            outer_loss = torch.tensor(0., device='cpu')
-            accuracy = torch.tensor(0., device='cpu')
+            outer_loss = torch.tensor(0., device='cuda')
+            accuracy = torch.tensor(0., device='cuda')
             for task_idx, (train_input, train_target, test_input,
                     test_target) in enumerate(zip(train_inputs, train_targets,
                     test_inputs, test_targets)):
@@ -78,13 +79,17 @@ def train():
             if(batch_idx >= 15000):
                 break
 
-    filename = os.path.join('', 'maml_omniglot_'
+    filename = os.path.join('', 'maml_miniimagenet_'
         '{0}shot_{1}way.th'.format(5, 5))
     with open(filename, 'wb') as f:
         state_dict = model.state_dict()
         torch.save(state_dict, f)
+    plt.xlabel('Task (1 epoch)')
+    plt.ylabel('Accuracy')
+    plt.title('MAML miniimagenet meta-training 15k tasks')
     plt.plot(accuracy_l[::150])
     plt.show()
+    print(sum(accuracy_l) / len(accuracy_l))
 
     
 

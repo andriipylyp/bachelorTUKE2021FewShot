@@ -35,8 +35,6 @@ def train():
             model.zero_grad()
 
             train_inputs, train_targets = batch['train']
-            print(train_inputs.shape)
-            break
             train_inputs = train_inputs.to(device='cuda')
             train_targets = train_targets.to(device='cuda')
             train_embeddings = model(train_inputs)
@@ -70,16 +68,17 @@ def train():
 
     # Save model
     
-    # filename = os.path.join('', 'matching_network_miniimagenet_'
-    #     '{0}shot_{1}way.pt'.format(num_shots, num_ways))
-    # with open(filename, 'wb') as f:
-    #     state_dict = model.state_dict()
-    #     torch.save(state_dict, f)
-    # plt.xlabel('Tasks (1 epoch)')
-    # plt.ylabel('Accuracy')
-    # plt.title('Matching network training 15000 tasks')
-    # plt.plot(accuracy_l[::150])
-    # plt.show()
+    filename = os.path.join('', 'matching_network_miniimagenet_'
+        '{0}shot_{1}way.pt'.format(num_shots, num_ways))
+    with open(filename, 'wb') as f:
+        state_dict = model.state_dict()
+        torch.save(state_dict, f)
+    plt.xlabel('Tasks (1 epoch)')
+    plt.ylabel('Accuracy')
+    plt.title('Matching network training 15000 tasks')
+    plt.plot(accuracy_l[::150])
+    plt.show()
+    print(sum(accuracy_l) / len(accuracy_l))
 
 if __name__ == '__main__':
     train()
