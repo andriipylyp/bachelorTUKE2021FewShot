@@ -59,16 +59,10 @@ def train():
             if batch_idx >= tasks:
                 break
 
-    # Save model
-    
-    # filename = os.path.join('', 'matching_network_miniimagenet_'
-    #     '{0}shot_{1}way.pt'.format(num_shots, num_ways))
-    # with open(filename, 'wb') as f:
-    #     state_dict = model.state_dict()
-    #     torch.save(state_dict, f)
+    #     
     plt.xlabel('Tasks (1 epoch)')
     plt.ylabel('Accuracy')
-    plt.title('Matching network training miniObjecta 100 tasks')
+    plt.title('MN miniobjectnet training (100 tasks)')
     plt.plot(accuracy_l)
     plt.show()
     print(sum(accuracy_l) / len (accuracy_l))

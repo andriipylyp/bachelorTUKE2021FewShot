@@ -62,9 +62,9 @@ if __name__ == "__main__":
             accuracy_l.append(accuracy.item())
             if idx > num_of_tasks-1:
                 break
-    plt.title('MAMAL meta-training on 100 tasks')
-    plt.xlabel('tasks (1 epoch)')
-    plt.ylabel('accuracy')
+    plt.title('MAML miniobjectnet training (100 tasks)')
+    plt.xlabel('Tasks (1 epoch)')
+    plt.ylabel('Accuracy')
     plt.plot(accuracy_l)
     plt.show()
     print(sum(accuracy_l) / len(accuracy_l))
